@@ -1,0 +1,151 @@
+{
+	"_schemaVersion" : "1.0.0",
+	"bgDataRead" : 
+	{
+		"inputs" : 
+		[
+			{
+				"kind" : "required",
+				"name" : "filename",
+				"purpose" : ".bgData文件路径",
+				"type" : 
+				[
+					"char"
+				]
+			},
+			{
+				"kind" : "namevalue",
+				"name" : "Llimit",
+				"purpose" : "BeamGage 颜色→z轴刻度下限",
+				"type" : 
+				[
+					"numeric",
+					">=0",
+					"<1"
+				]
+			},
+			{
+				"kind" : "namevalue",
+				"name" : "maxpower",
+				"purpose" : "BeamGage 颜色→z轴刻度峰值",
+				"type" : 
+				[
+					"numeric"
+				]
+			},
+			{
+				"kind" : "namevalue",
+				"name" : "GroupName",
+				"purpose" : "BeamGage 读取帧序号",
+				"type" : 
+				[
+					"numeric"
+				]
+			}
+		]
+	},
+	"gauss2fit" : 
+	{
+		"inputs" : 
+		[
+			{
+				"kind" : "required",
+				"name" : "x",
+				"purpose" : "x轴",
+				"type" : 
+				[
+					"vector"
+				]
+			},
+			{
+				"kind" : "required",
+				"name" : "y",
+				"purpose" : "y轴",
+				"type" : 
+				[
+					"vector"
+				]
+			},
+			{
+				"kind" : "required",
+				"name" : "z",
+				"purpose" : "z值,double",
+				"type" : 
+				[
+					"vector"
+				]
+			}
+		]
+	},
+	"modefield_overlap_bgData" : 
+	{
+		"inputs" : 
+		[
+			{
+				"kind" : "required",
+				"name" : "file_WG",
+				"purpose" : "波导.bgData文件路径",
+				"type" : 
+				[
+					"file=*.bgData"
+				]
+			},
+			{
+				"kind" : "required",
+				"name" : "file_fiber",
+				"purpose" : "光纤.bgData文件路径",
+				"type" : 
+				[
+					"file=*.bgData"
+				]
+			},
+			{
+				"kind" : "namevalue",
+				"name" : "Llimit",
+				"purpose" : "BeamGage 颜色→z轴刻度下限",
+				"type" : 
+				[
+					"numeric",
+					">=0",
+					"<1"
+				]
+			},
+			{
+				"kind" : "namevalue",
+				"name" : "Colormap",
+				"purpose" : "展示图像的colormap，默认OSI_rainbow，'jet'、'gray'、'OSI_rainbow'",
+				"type" : 
+				[
+					"char"
+				]
+			},
+			{
+				"kind" : "namevalue",
+				"name" : "debug",
+				"purpose" : "是否给出计算过程图像和文字",
+				"type" : 
+				[
+					"logical"
+				]
+			},
+			{
+				"kind" : "namevalue",
+				"name" : "debug_figure",
+				"purpose" : "可关闭图像",
+				"type" : 
+				[
+					"logical"
+				]
+			},
+			{
+				"kind" : "namevalue",
+				"name" : "debug_txt",
+				"purpose" : "可关闭文字",
+				"type" : 
+				[
+					"logical"
+				]
+			}
+		]
+	}
+}

@@ -1,0 +1,93 @@
+[INFO ] addOneFunSign for: G:\git\modefield_overlap\resource/bgDataRead.m
+[INFO ] define name: bgDataRead, type: function
+[INFO ] define prefix: bgDataRead
+[INFO ] State: IDLE, Line: % bgDataRead  Read data from .bgData file.
+[INFO ] State: IDLE, Line: %   [I,bgData] = bgDataRead(filename)
+[INFO ] State: IDLE, Line: %   [I,bgData] = bgDataRead(filename,"Llimit",Llimit)
+[INFO ] State: IDLE, Line: %   [I,bgData] = bgDataRead(filename,"Llimit",Llimit,"maxpower",maxpower,"GroupName",GroupName)
+[INFO ] State: IDLE, Line: %
+[INFO ] State: IDLE, Line: %   Llimit = [0,1); BeamGage 颜色→z轴刻度下限
+[INFO ] State: IDLE, Line: %   maxpower = 4000; BeamGage 颜色→z轴刻度峰值
+[INFO ] State: IDLE, Line: %   GroupName = 1; BeamGage 读取帧序号
+[INFO ] State: IDLE, Line: %
+[INFO ] State: IDLE, Line: % Syntax: (这里添加函数的调用格式, `[]`的内容表示可选参数)
+[INFO ] State: IDLE, Line: %	[I,bgSet] = bgDataRead(filename ...
+[INFO ] State: IDLE, Line: %							[, 'Llimit', 0 ...
+[INFO ] State: IDLE, Line: %							 , 'maxpower', 4000...
+[INFO ] State: IDLE, Line: %							 , 'GroupName', 1]);
+[INFO ] State: IDLE, Line: %
+[INFO ] State: PARA, Line: % Params:
+[INFO ] State: ARGU, Line: %   - filename  [required]  [char] .bgData文件路径
+[INFO ] State: ARGU, Line: %   - Llimit    [namevalue]  [numeric; >=0; <1] BeamGage 颜色→z轴刻度下限
+[INFO ] State: ARGU, Line: %   - maxpower  [namevalue]  [numeric] BeamGage 颜色→z轴刻度峰值
+[INFO ] State: ARGU, Line: %   - GroupName  [namevalue]  [numeric] BeamGage 读取帧序号
+[INFO ] State: ARGU, Line: %
+[WARN ] cannot find argument symbol: %
+[INFO ] State: EXIT, Line: % Return:
+[INFO ]  ------------------------ Done :)
+[INFO ] addOneFunSign for: G:\git\modefield_overlap\resource/gauss2fit.m
+[INFO ] define name: gauss2fit, type: function
+[INFO ] define prefix: gauss2fit
+[INFO ] State: IDLE, Line: % gauss2fit(X, Y, Z) 二维高斯拟合
+[INFO ] State: IDLE, Line: %   二维高斯拟合
+[INFO ] State: IDLE, Line: %
+[INFO ] State: IDLE, Line: %   https://blog.csdn.net/u012366767/article/details/90743083
+[INFO ] State: IDLE, Line: %
+[INFO ] State: IDLE, Line: %   f(x,y) = A*exp(-(x-X0)^2/(2*sigmaX2)-(y-Y0)^2/(2*sigmaY2))
+[INFO ] State: IDLE, Line: %
+[INFO ] State: IDLE, Line: %   ln(f) = lnA - (x-X0)^2/(2*sigmaX2) - (y-Y0)^2/(2*sigmaY2)
+[INFO ] State: IDLE, Line: %   ln(f) = p00 + p10*x + p01*y + p20*x^2 + p02*y^2;
+[INFO ] State: IDLE, Line: %   p00 = lnA - X0^2/(2*sigmaX2) - Y0^2/(2*sigmaY2)
+[INFO ] State: IDLE, Line: %   p10 = X0/sigmaX2
+[INFO ] State: IDLE, Line: %   p01 = Y0/sigmaY2
+[INFO ] State: IDLE, Line: %   p20 = -0.5/sigmaX2
+[INFO ] State: IDLE, Line: %   p02 = -0.5/sigmaY2
+[INFO ] State: IDLE, Line: %
+[INFO ] State: IDLE, Line: % 以上拟合与Whole Beam Fit Eq仍有差距,可以依赖以下四行在matlab中运算
+[INFO ] State: IDLE, Line: %   syms xxe y ye sX2 sY2 Al A2 Wx Wy AO
+[INFO ] State: IDLE, Line: %   A1 = A*exp(-(x-x0)^2/2/sX2-(y-y0)^2/2/sY2)
+[INFO ] State: IDLE, Line: %   A2 = A*exp(-2*(((x-x8)/(wx/2))^2-((y-y0)/(wy/2))^2))
+[INFO ] State: IDLE, Line: %   solve(2*sX2==Wx^2/8)
+[INFO ] State: IDLE, Line: %   最后可以得到WB
+[INFO ] State: IDLE, Line: %
+[INFO ] State: IDLE, Line: % Syntax: (这里添加函数的调用格式, `[]`的内容表示可选参数)
+[INFO ] State: IDLE, Line: %	[fitresult,gof,gauss2,WB] = gauss2fit(x,y,z);
+[INFO ] State: IDLE, Line: %
+[INFO ] State: PARA, Line: % Params:
+[INFO ] State: ARGU, Line: %   - x [required]  [vector] x轴
+[INFO ] State: ARGU, Line: %   - y [required]  [vector] y轴
+[INFO ] State: ARGU, Line: %   - z [required]  [vector] z值,double
+[INFO ] State: ARGU, Line: %
+[WARN ] cannot find argument symbol: %
+[INFO ] State: EXIT, Line: % Return:
+[INFO ]  ------------------------ Done :)
+[INFO ] addOneFunSign for: G:\git\modefield_overlap\resource/modefield_overlap_bgData.m
+[INFO ] define name: modefield_overlap_bgData, type: function
+[INFO ] define prefix: modefield_overlap_bgData
+[INFO ] State: IDLE, Line: % modefield_overlap_bgData  calc overlap int from 2 .bgData files.
+[INFO ] State: IDLE, Line: %   [Int2,Int2_Sim,gof] = modefield_overlap_bgData(file_WG,file_fiber)
+[INFO ] State: IDLE, Line: %   [Int2,Int2_Sim,gof] = modefield_overlap_bgData(file_WG,file_fiber,"Llimit",Llimit)
+[INFO ] State: IDLE, Line: %   [Int2,Int2_Sim,gof] = modefield_overlap_bgData(file_WG,file_fiber,"Llimit",Llimit,"debug",debug)
+[INFO ] State: IDLE, Line: %   [Int2,Int2_Sim,gof] = modefield_overlap_bgData(".\test\1.bgData",".\test\fiber.bgData","Llimit",0.1,"debug",1)
+[INFO ] State: IDLE, Line: %
+[INFO ] State: IDLE, Line: % Syntax: (这里添加函数的调用格式, `[]`的内容表示可选参数)
+[INFO ] State: IDLE, Line: %	[Int2,Int2_Sim,gof] = bgDataRead(file_WG,file_fiber ...
+[INFO ] State: IDLE, Line: %							[, 'Llimit', 0.1 ...
+[INFO ] State: IDLE, Line: %							 , 'Colormap', 'OSI_rainbow'...
+[INFO ] State: IDLE, Line: %							 , 'debug', 1...
+[INFO ] State: IDLE, Line: %							 , 'debug_figure', 0...
+[INFO ] State: IDLE, Line: %							 , 'debug_txt', 0]);
+[INFO ] State: IDLE, Line: %
+[INFO ] State: PARA, Line: % Params:
+[INFO ] State: ARGU, Line: %   - file_WG       [required]  [file=*.bgData] 波导.bgData文件路径
+[INFO ] State: ARGU, Line: %   - file_fiber    [required]  [file=*.bgData] 光纤.bgData文件路径
+[INFO ] State: ARGU, Line: %   - Llimit        [namevalue] [numeric; >=0; <1] BeamGage 颜色→z轴刻度下限
+[INFO ] State: ARGU, Line: %   - Colormap      [namevalue] [char] 展示图像的colormap，默认OSI_rainbow，'jet'、'gray'、'OSI_rainbow'
+[INFO ] State: ARGU, Line: %   - debug         [namevalue] [logical] 是否给出计算过程图像和文字
+[INFO ] State: ARGU, Line: %   - debug_figure  [namevalue] [logical] 可关闭图像
+[INFO ] State: ARGU, Line: %   - debug_txt     [namevalue] [logical] 可关闭文字
+[INFO ] State: ARGU, Line: %
+[WARN ] cannot find argument symbol: %
+[INFO ] State: EXIT, Line: % Return:
+[INFO ]  ------------------------ Done :)
+[INFO ] Ouput json: G:\git\modefield_overlap\resource/functionSignatures.json

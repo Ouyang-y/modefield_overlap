@@ -1,20 +1,43 @@
 function [fitresult,gof,gauss2,WB] = gauss2fit(x,y,z)
-%gauss2fit(X, Y, Z) 二维高斯拟合
-%  二维高斯拟合
+% gauss2fit(X, Y, Z) 二维高斯拟合
+%   二维高斯拟合
 %
-%  https://blog.csdn.net/u012366767/article/details/90743083
+%   https://blog.csdn.net/u012366767/article/details/90743083
 %
-%  f(x,y) = A*exp(-(x-X0)^2/(2*sigmaX2)-(y-Y0)^2/(2*sigmaY2))
+%   f(x,y) = A*exp(-(x-X0)^2/(2*sigmaX2)-(y-Y0)^2/(2*sigmaY2))
 %
-%  ln(f) = lnA - (x-X0)^2/(2*sigmaX2) - (y-Y0)^2/(2*sigmaY2)
-%  ln(f) = p00 + p10*x + p01*y + p20*x^2 + p02*y^2;
-%  p00 = lnA - X0^2/(2*sigmaX2) - Y0^2/(2*sigmaY2)
-%  p10 = X0/sigmaX2
-%  p01 = Y0/sigmaY2
-%  p20 = -0.5/sigmaX2
-%  p02 = -0.5/sigmaY2
+%   ln(f) = lnA - (x-X0)^2/(2*sigmaX2) - (y-Y0)^2/(2*sigmaY2)
+%   ln(f) = p00 + p10*x + p01*y + p20*x^2 + p02*y^2;
+%   p00 = lnA - X0^2/(2*sigmaX2) - Y0^2/(2*sigmaY2)
+%   p10 = X0/sigmaX2
+%   p01 = Y0/sigmaY2
+%   p20 = -0.5/sigmaX2
+%   p02 = -0.5/sigmaY2
 %
+% 以上拟合与Whole Beam Fit Eq仍有差距,可以依赖以下四行在matlab中运算
+%   syms xxe y ye sX2 sY2 Al A2 Wx Wy AO
+%   A1 = A*exp(-(x-x0)^2/2/sX2-(y-y0)^2/2/sY2)
+%   A2 = A*exp(-2*(((x-x8)/(wx/2))^2-((y-y0)/(wy/2))^2))
+%   solve(2*sX2==Wx^2/8)
+%   最后可以得到WB
 %
+% Syntax: (这里添加函数的调用格式, `[]`的内容表示可选参数)
+%	[fitresult,gof,gauss2,WB] = gauss2fit(x,y,z);
+%
+% Params:
+%   - x [required]  [vector] x轴
+%   - y [required]  [vector] y轴
+%   - z [required]  [vector] z值,double
+%
+% Return:
+%   - fitresult 多项式拟合结果
+%   - gof       拟合gof
+%   - gauss2    二维高斯函数
+%   - WB        Whole Beam Fit Eq
+%
+% Matlab Version: R2024b
+%
+% Author: oyy
 
 % 利用多项式拟合
 [xData,yData,zData] = prepareSurfaceData(x,y,log(z));
