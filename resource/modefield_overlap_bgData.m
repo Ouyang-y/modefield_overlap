@@ -46,7 +46,7 @@ end
 % 读图
 [mf_WG_original,~] = bgDataRead(file_WG,Llimit=options.Llimit);
 [mf_fiber_original,~] = bgDataRead(file_fiber,Llimit=options.Llimit);
-% 去除无光强部分
+% 去除无光强部分并依据最大值进行归一化
 mf_WG = beamGageGray64ImgPrepare(mf_WG_original);
 mf_fiber = beamGageGray64ImgPrepare(mf_fiber_original);
 
@@ -54,7 +54,9 @@ mf_fiber = beamGageGray64ImgPrepare(mf_fiber_original);
 % 对比图片大小设置计算范围
 % 在大小之间取最大值作为新图进行计算
 % 找出二维高斯中心并移动到相同大小的图片中
-% warning('off','curvefit:prepareFittingData:removingNaNAndInf');
+% 实验数据拟合结果:
+%   gauss2_WG       需要其中的X0、Y0进行移动
+%   gauss2_fiber    需要其中的X0、Y0进行移动
 [size_WG(1),size_WG(2)] = size(mf_WG);
 [~,gof,gauss2_WG,~] = gauss2fit(1:size_WG(2),1:size_WG(1),mf_WG);
 mid_WG = round([gauss2_WG.Y0,gauss2_WG.X0]);
@@ -75,11 +77,14 @@ im_fiber(1:size_fiber(1),1:size_fiber(2))=mf_fiber;im_fiber = circshift(im_fiber
 Int2 = sum(sum((im_WG.^0.5).*(im_fiber.^0.5)))^2/sum(sum(im_WG))/sum(sum(im_fiber));
 
 % 验证统一性
-[fitr_WG,~,gauss_WG,~] = gauss2fit(1:size0(2),1:size0(1),im_WG);
-[fitr_fiber,~,gauss_fiber,~] = gauss2fit(1:size0(2),1:size0(1),im_fiber);
+% 平移后实验数据拟合结果:
+%   fitr_WG         计算模拟的
+%   gof_Cal_WG      在输出图像时，figure2 > title中输出R^2
+%   gauss_WG        需要对比平移后波导和光纤的X0、Y0一致性
+[fitr_WG,gof_Cal_WG,gauss_WG,~] = gauss2fit(1:size0(2),1:size0(1),im_WG);
+[fitr_fiber,gof_Cal_fiber,gauss_fiber,~] = gauss2fit(1:size0(2),1:size0(1),im_fiber);
 
 % 拟合图片重叠积分
-% warning('on','curvefit:prepareFittingData:removingNaNAndInf');
 [x,y] = meshgrid(1:size0(2),1:size0(1));
 fitr_WG_im = exp(feval(fitr_WG,x,y));
 fitr_fiber_im = exp(feval(fitr_fiber,x,y));
@@ -121,14 +126,14 @@ if options.debug
         % fig2-(2,2)拟合光纤图
         nexttile;mesh(fitr_fiber_im);set(gca,'YColor','r','XColor','r','ZColor','r');
         % fig2-(3,1)拟合波导误差图
-        nexttile;imagesc(fit_erro_WG);title('fit error (%)');set(gca,'YColor','b','XColor','b','ZColor','b')
+        nexttile;imagesc(fit_erro_WG);title(sprintf('fit error (%%), R^2=%.4f',gof_Cal_WG.rsquare));set(gca,'YColor','b','XColor','b','ZColor','b')
         colormap(options.Colormap);cb = colorbar;cb.Location = 'southoutside';
         cb.Limits(2)=max(max(fit_erro_WG));
         cb.Limits(2)=max(max(fit_erro_WG(fit_erro_WG<0.99*cb.Limits(2))));
         cb.Ticks=linspace(cb.Limits(1),cb.Limits(2),6);cb.Color='b';
         cb.TickLabels=split(num2str(ceil(cb.Ticks*1000)/1000));
         % fig2-(3,1)拟合光纤误差图
-        nexttile;imagesc(fit_erro_fiber);title('fit error (%)');set(gca,'YAxisLocation','right','YColor','r','XColor','r','ZColor','r')
+        nexttile;imagesc(fit_erro_fiber);title(sprintf('fit error (%%), R^2=%.4f',gof_Cal_fiber.rsquare));set(gca,'YAxisLocation','right','YColor','r','XColor','r','ZColor','r')
         colormap(options.Colormap);cb = colorbar;cb.Location = 'southoutside';
         cb.Limits(2)=max(max(fit_erro_fiber));
         cb.Limits(2)=max(max(fit_erro_fiber(fit_erro_fiber<0.99*cb.Limits(2))));
