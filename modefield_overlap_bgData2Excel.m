@@ -23,7 +23,8 @@ originalPath = pwd;
 T = table('Size',[num,6], ...
     'VariableTypes',{'string','double','double','double','double','double'}, ...
     'VariableNames',{'Name','R^2','Int2','Int2(dB)','Int2_Sim','Int2_Sim(dB)'});
-addpath("resource")
+mfilePath = mfilename("fullpath");
+addpath([mfilePath(1:end-length(mfilename)),'\resource'])
 warning('off','curvefit:prepareFittingData:removingNaNAndInf');
 tic
 for temp = 1:num
