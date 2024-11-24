@@ -6,8 +6,8 @@
 - 删除2Excel的test文件减小仓库体积
 - 遗弃处理图片方式
 - 改进函数modefield_overlap_bgData.m
-  + 在Debug>figure2中加入R^2输出
-  + 更新注释
+    + 在Debug>figure2中加入R^2输出
+    + 更新注释
 - 增加modefield_overlap_bgDataDebug.m
 - 改进modefield_overlap_bgData2Exce.m内addpath
 ### V0.2
