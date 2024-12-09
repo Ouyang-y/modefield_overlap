@@ -31,6 +31,8 @@ modefield_overlap
             标尺2.bgData
 ```
 ## 更新记录
+### V0.4
+- 在modefield_overlap_bgData2Excel中，加入try、catch处理异常数据
 ### V0.3
 - 文件结构维护
 - 删除2Excel的test文件减小仓库体积
