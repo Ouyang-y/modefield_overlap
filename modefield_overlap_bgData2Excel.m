@@ -1,4 +1,4 @@
-%% 
+%%
 % input:
 %   - bgDataFolder  .bgData文件夹路径
 %   - fiberPath     fiber对应的.bgData路径
@@ -30,8 +30,13 @@ tic
 for temp = 1:num
     fprintf('%d/%d:',temp,num)
     WGPath = fullfile(bgDatas(temp).folder,bgDatas(temp).name);
-    [Int2,Int2_Sim,gof] = modefield_overlap_bgData(WGPath,fiberPath);
     [~,name,~]=fileparts(WGPath);
+    try
+        [Int2,Int2_Sim,gof] = modefield_overlap_bgData(WGPath,fiberPath);
+    catch
+        warning('can not deal file :%s ---- Padding zero\n',WGPath)
+        [Int2,Int2_Sim,gof.rsquare] = deal(0,0,0);
+    end
     T(temp,:) = {name,gof.rsquare,Int2,-10*log10(Int2),Int2_Sim,-10*log10(Int2_Sim)};
     toc
 end
